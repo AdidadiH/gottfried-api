@@ -1,3 +1,5 @@
+// #define CROW_STATIC_DIRECTORY "./files/"
+
 #include <crow.h>
 #include <string>
 
@@ -10,5 +12,14 @@ int main() {
   CROW_ROUTE(app, "/health")
   ([]() { return crow::response(200, "{\"status\":\"ok\"}"); });
 
-  app.port(8080).multithreaded().run();
+  CROW_ROUTE(app, "/api/view/test")
+  ([]() {
+    crow::response res;
+
+    res.set_static_file_info("build/files/test.png");
+
+    return res;
+  });
+
+  app.port(80).multithreaded().run();
 }
